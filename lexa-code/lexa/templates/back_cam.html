@@ -1,0 +1,167 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <style>
+button {
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 10px;
+    padding-left: 50px;
+    padding-right: 50px;
+    background-color: rgb(31, 31, 31);
+    margin-left: 7%;
+    margin-top: 3%;
+    border: 7px solid rgb(0, 0, 0); /* Virgül hatası düzeltildi */
+    border-radius: 25px;
+    transition: all 0.3s ease; /* Geçiş efekti eklendi */
+}
+
+button:hover {
+    background-color: white;
+    color: rgb(31, 31, 31);
+    border-color: rgb(31, 31, 31);
+    cursor: pointer;
+}
+
+.solrec {
+    background-color: blue;
+    height: 30px;
+    width: 0px;
+    position: absolute;
+    right: 0;
+    display: inline-block;
+}
+
+    </style>
+    <script>
+        $(document).ready(function(){
+            function sol_kor_nokta_kontrolu(uzakliksolbir, uzakliksoliki, uzakliksoluc, cla){
+                console.log(uzakliksolbir, uzakliksoliki, uzakliksoluc);
+                if(uzakliksolbir <= 150 && uzakliksolbir > 0  || uzakliksoliki <= 150 && uzakliksoliki > 0 || uzakliksoluc <= 150 && uzakliksoluc > 0){
+                    $(cla).html("<h1> Solda Araba Var</h1>")
+                }
+                else{
+                    $(cla).html("<h1> Solda Araba Yok </h1>")
+                }
+            }
+
+            function sag_kor_nokta_kontrolu(uzakliksagbir, uzakliksagiki, uzakliksaguc, cla){
+                console.log(uzakliksagbir, uzakliksagiki, uzakliksaguc);
+                if(uzakliksagbir <= 150 && uzakliksagbir > 0  || uzakliksagiki <= 150 && uzakliksagiki > 0 || uzakliksaguc <= 150 && uzakliksaguc > 0){
+                    $(cla).html("<h1> Sağda Araba Var</h1>")
+                }
+                else{
+                    $(cla).html("<h1> Sağda Araba Yok </h1>")
+                }
+            }
+
+            
+    function fetchData() {
+        let uzakliksolbir;
+        let uzakliksoliki;
+        let uzakliksoluc;
+        let uzakliksagbir;
+        let uzakliksagiki;
+        let uzakliksaguc;
+        $.ajax({
+            url: "http://127.0.0.1:8000/back_cam/get_request",
+            method: "GET",
+            dataType: "json",
+            success: function(response) {
+                //console.log(response)
+                response.forEach(function(data){
+                    if(data.id == 6){
+                        if(data.value == 0){
+                            $(".nav").css("display", "none");
+                            $(".bc").css("display", "inline-block");
+                            //console.log("Geri Vites")
+                        }
+                        else{
+                            $(".nav").css("display", "inline-block");
+                            $(".bc").css("display", "none");
+                            //console.log("İleri")
+                        }
+                    }
+                    else if(data.id == 5){
+                        if(data.value == 1){
+                            //console.log("Far açık");
+                            $(".far").html("<h1>Far: Açık </h1>")
+                        }
+                        else{
+                            //console.log("Far kapalı");
+                            $(".far").html("<h1>Far: Kapali </h1>")
+                        }
+                    }
+                    else if(data.id == 7){
+                        //console.log("Tur:", data.value)
+                        $(".tur").html("<h1>Tur: " + data.value + "</h1>")
+                    }
+                    else if(data.id == 3){
+                        //console.log("HIZ:", data.value)
+                        $(".hiz").html("<h1>Hız: " + data.value + "</h1>")
+                    }
+                    else if(data.id == 4){
+                        //console.log("ON/OFF:", data.value)
+                        $(".sabitonoff").html("<h1> Sabitleyici: " + data.value + "</h1>")
+                    }
+                    else if(data.id == 8){
+                        uzakliksolbir = data.value
+                    }
+                    else if(data.id == 9){
+                        uzakliksoliki = data.value
+                    }
+                    else if(data.id == 10){
+                        uzakliksoluc = data.value
+                    }
+                    else if(data.id == 11){
+                        uzakliksagbir = data.value
+                    }
+                    else if(data.id == 12){
+                        uzakliksagiki = data.value
+                    }
+                    else if(data.id == 13){
+                        uzakliksaguc = data.value
+                    }
+                })
+                sol_kor_nokta_kontrolu(uzakliksolbir, uzakliksoliki, uzakliksoluc, ".kor_nokta_sol")
+                sag_kor_nokta_kontrolu(uzakliksagbir, uzakliksagiki, uzakliksaguc, ".kor_nokta_sag")
+            },
+            error: function(xhr, status, error) {
+                console.error("Hata oluştu:", status, error);
+            }
+        });
+    }
+
+
+    setInterval(fetchData,400);
+});
+
+    </script>
+</head>
+<body>
+    <div class="kor_nokta_sol"></div>
+    <div class="kor_nokta_sag"></div>
+    <div>
+        <div style="display: inline-block; vertical-align: top; width: 350px;">
+            <div style="display: block; font-size: 45px;" class="hiz"></div>
+            <div style="display: block;" class="sabitonoff"></div>
+            <div style="display: block;" class="far"></div>
+            <div style="display: block;" class="tur"></div>
+        </div>
+        <div class = "container" style="display: inline-block;">
+            <img class="nav" src="{% url 'nav'%}" style="width:480px!important; height: 480px!important;" alt="">
+            <img class="nav" src="{% url 'serit_takip_stream'%}" style="width:480px!important; height: 480px!important;" alt="">
+        </div>
+    </div>
+    <div class = "container">
+        <img class="bc" src="{% url 'back_cam_stream'%}" style="width:960px!important; height: 480px!important;" alt="">
+    </div>
+</body>
+</html>
