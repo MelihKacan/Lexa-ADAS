@@ -177,7 +177,7 @@ def tr_stream(request):
             image = image.astype('float32')
             return image.reshape(1, 32, 32, 3)
 
-        tflite_model_path = "lexa_team_tf_test_v4.tflite" #PATH
+        tflite_model_path = "C:\\Users\\Lenovo\\Desktop\\lexa-code\\lexa\\back_cam\\lexa_team_tf_test_v4.tflite" #PATH
         
         interpreter = tf.lite.Interpreter(model_path=tflite_model_path)
         interpreter.allocate_tensors()
@@ -188,7 +188,7 @@ def tr_stream(request):
         print("Kamera açıldı. Çıkmak için 'q' tuşuna basın.")
 
         while True:
-            ret, frame = cap.read()
+            ret, frame = cap.read(0)
             if not ret:
                 print("Kamera okunamadı.")
                 break
@@ -210,13 +210,22 @@ def tr_stream(request):
                 class_index = np.argmax(pred)
                 probability = np.max(pred)
 
-                print(f"Tahmin olasılıkları: {pred}")
-                print(f"Tahmin edilen sınıf: {wanted_classes_names[class_index]} - Olasılık: {probability:.3f}")
+                #print(f"Tahmin olasılıkları: {pred}")
+                #print(f"Tahmin edilen sınıf: {wanted_classes_names[class_index]} - Olasılık: {probability:.3f}")
 
                 if probability > 0.7:
                     text = f"{wanted_classes_names[class_index]} - %{round(probability * 100, 1)}"
-                    cv2.putText(frame, text, (10, 40), cv2.FONT_HERSHEY_SIMPLEX,
-                                0.8, (0, 0, 255), 2)
+                    frame_h, frame_w, _ = frame.shape
+
+                    font_scale = 1.2  # Küçük ekran için uygun
+                    thickness = 2
+                    text_size, _ = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, font_scale, thickness)
+
+                    text_x = 0
+                    text_y = 30
+
+                    cv2.putText(frame, text, (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX,
+                                font_scale, (0, 0, 255), thickness)
 
             except Exception as e:
                 print("Hata:", e)

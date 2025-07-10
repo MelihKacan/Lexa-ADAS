@@ -45,20 +45,20 @@ button:hover {
             function sol_kor_nokta_kontrolu(uzakliksolbir, uzakliksoliki, uzakliksoluc, cla){
                 console.log(uzakliksolbir, uzakliksoliki, uzakliksoluc);
                 if(uzakliksolbir <= 150 && uzakliksolbir > 0  || uzakliksoliki <= 150 && uzakliksoliki > 0 || uzakliksoluc <= 150 && uzakliksoluc > 0){
-                    $(cla).html("<h1> Solda Araba Var</h1>")
+                    $(cla).html("<h4> Solda Araba Var</h4>")
                 }
                 else{
-                    $(cla).html("<h1> Solda Araba Yok </h1>")
+                    $(cla).html("<h4> Solda Araba Yok </h4>")
                 }
             }
 
             function sag_kor_nokta_kontrolu(uzakliksagbir, uzakliksagiki, uzakliksaguc, cla){
                 console.log(uzakliksagbir, uzakliksagiki, uzakliksaguc);
                 if(uzakliksagbir <= 150 && uzakliksagbir > 0  || uzakliksagiki <= 150 && uzakliksagiki > 0 || uzakliksaguc <= 150 && uzakliksaguc > 0){
-                    $(cla).html("<h1> Sağda Araba Var</h1>")
+                    $(cla).html("<h4> Sağda Araba Var</h4>")
                 }
                 else{
-                    $(cla).html("<h1> Sağda Araba Yok </h1>")
+                    $(cla).html("<h4> Sağda Araba Yok </h4>")
                 }
             }
 
@@ -92,24 +92,24 @@ button:hover {
                     else if(data.id == 5){
                         if(data.value == 1){
                             //console.log("Far açık");
-                            $(".far").html("<h1>Far: Açık </h1>")
+                            $(".far").html("<h4>Far: Açık </h4>")
                         }
                         else{
                             //console.log("Far kapalı");
-                            $(".far").html("<h1>Far: Kapali </h1>")
+                            $(".far").html("<h4>Far: Kapali </h4>")
                         }
                     }
                     else if(data.id == 7){
                         //console.log("Tur:", data.value)
-                        $(".tur").html("<h1>Tur: " + data.value + "</h1>")
+                        $(".tur").html("<h4>Tur: " + data.value + "</h4>")
                     }
                     else if(data.id == 3){
                         //console.log("HIZ:", data.value)
-                        $(".hiz").html("<h1>Hız: " + data.value + "</h1>")
+                        $(".hiz").html("<h4>Hız: " + data.value + "</h4>")
                     }
                     else if(data.id == 4){
                         //console.log("ON/OFF:", data.value)
-                        $(".sabitonoff").html("<h1> Sabitleyici: " + data.value + "</h1>")
+                        $(".sabitonoff").html("<h4> Sabitleyici: " + data.value + "</h4>")
                     }
                     else if(data.id == 8){
                         uzakliksolbir = data.value
@@ -146,18 +146,20 @@ button:hover {
     </script>
 </head>
 <body>
-    <div class="kor_nokta_sol"></div>
-    <div class="kor_nokta_sag"></div>
+    
     <div>
-        <div style="display: inline-block; vertical-align: top; width: 350px;">
-            <div style="display: block; font-size: 45px;" class="hiz"></div>
-            <div style="display: block;" class="sabitonoff"></div>
-            <div style="display: block;" class="far"></div>
-            <div style="display: block;" class="tur"></div>
+        <div style="display: inline-block; vertical-align: top; width: 800px;">
+            <div style="display: inline-block;" class="kor_nokta_sol"></div>
+            <div style="display: inline-block;" class="kor_nokta_sag"></div>
+            <div style="display: inline-block;" class="hiz"></div>
+            <div style="display: inline-block;" class="sabitonoff"></div>
+            <div style="display: inline-block;" class="far"></div>
+            <div style="display: inline-block;" class="tur"></div>
         </div>
         <div class = "container" style="display: inline-block;">
-            <img class="nav" src="{% url 'nav'%}" style="width:480px!important; height: 480px!important;" alt="">
-            <img class="nav" src="{% url 'serit_takip_stream'%}" style="width:480px!important; height: 480px!important;" alt="">
+            <img class="nav" src="{% url 'nav'%}" style="width:333px!important; height: 500px!important;" alt="">
+            <img class="nav" src="{% url 'serit_takip_stream'%}" style="width:333px!important; height: 500px!important;" alt="">
+            <img class="nav" src="{% url 'tr_stream'%}" style="width:333px!important; height: 500px!important;" alt="">
         </div>
     </div>
     <div class = "container">
